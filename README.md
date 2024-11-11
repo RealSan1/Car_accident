@@ -80,3 +80,14 @@ Drive.csv
 |3|34|3|''''|31-35|
 |4|44|1|''''|41-45|
 |5|24|3|''''|21-25|
+
+연령대 별 중상자 비율 계산
+
+<pre>
+<code>
+def count(x):
+  return x[x!=1].sum()/x.count() #경상제외
+
+age_severity = df.groupby('Age_Group')
+</code>
+</pre>
