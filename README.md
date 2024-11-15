@@ -1,4 +1,4 @@
-# 연령별 교통사고 중상율
+# 교통사고 데이터 분석
 
 데이터 (UK Car Accidents 2005-2015)
 <pre>
@@ -47,8 +47,21 @@ Drive.csv
 |4|44|1|
 |5|24|3|
 
+## 연령별 교통사고 중상자 비율
+### 유튜브에 [노인] 검색 시 교통사고 관련 검색어만 3개가 존재한다.
+이처럼 연령이 증가할수록 교통사고 확률이 높아지는 걸까?
 
-연령 그룹화
+![유튜브 연관검색어](https://github.com/user-attachments/assets/4389ae9a-6f1e-4a50-9941-5a77a8782113)
+
+### 시애틀 종단연구는 1956년에 시작해서 40년이 넘는 동안 6,000명의 정신적 기량을 추적해온 연구
+결과에서 운전 시 중요한 지각-반응속도가 나이가 들수록 급격하게 줄어드는 결과를 보이고 있다.
+
+![연령별 인지능력](https://github.com/user-attachments/assets/264534c0-72a1-4431-8a02-f726a77f937b)
+
+
+## 나이가 증가할수록 교통사고 시 환자의 중증도는 정말로 높아질까?
+
+- 연령 그룹화
 <pre>
 <code>
 import pandas as pd
@@ -81,7 +94,7 @@ Drive.csv
 |4|44|1|''''|41-45|
 |5|24|3|''''|21-25|
 
-연령대 별 중상자 비율 계산
+- 연령대 별 중상자 비율 계산
 
 <pre>
 <code>
@@ -91,3 +104,40 @@ def count(x):
 age_severity = df.groupby('Age_Group')
 </code>
 </pre>
+
+- 그래프표현
+
+<pre>
+<code>
+age_severity = df.groupby('Age_Group')
+data = age_severity.agg(count)
+data = data.reset_index()
+
+plt.figure(figsize=(10, 6))
+plt.plot(data['Age_Group'], data['Accident_Severity'], marker='o', linestyle='-', color='skyblue')
+
+plt.xlabel('연령대')
+plt.ylabel('중상자 비율')
+plt.title('연령별 교통사고 중상자 비율')
+plt.xticks(rotation=45)
+
+plt.yscale('log')
+plt.tight_layout()
+plt.show()
+</code>
+</pre>
+
+- 결과 
+
+![image](https://github.com/user-attachments/assets/aa5a4d5f-9aee-445a-b4d8-ad83a635ca04)
+
+연령대가 증가할수록 교통사고 증싱지 비율이 감소하는 추세이다.
+
+## 결론
+연령이 증가함에 따라 운전 솜씨가 향상되고, 면허 갱신 시기가 짧아지며 의사 소견서 제출이 요구된다. <br>
+이러한 요인들로 인해 교통사고 발생 시 중증 환자의 비율이 감소한다.
+[영국 노년 운전면허 갱신방법](https://www.gov.uk/renew-driving-licence-at-70#more-information)
+
+
+
+
