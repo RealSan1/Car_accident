@@ -127,7 +127,7 @@ plt.show()
 </code>
 </pre>
 
-- 결과 
+### 결과 
 
 ![image](https://github.com/user-attachments/assets/aa5a4d5f-9aee-445a-b4d8-ad83a635ca04)
 
@@ -141,6 +141,8 @@ plt.show()
 
 ## 가장 많은 교통사고가 발생하는 요일과 시간대
 
+### 처리과정
+
 <pre>
 <code>
 import pandas as pd
@@ -153,5 +155,43 @@ df.drop(['Age_of_Driver', 'Accident_Index', 'Unnamed: 0'], axis=1, inplace=True)
 # 형식 변환
 df['Time'] = pd.to_datetime(df['Time'], format='%H:%M')
 df['Time'] = df.groupby(pd.Grouper(key='Time', freq='1H'))['Time'].transform('first').dt.strftime('%H:%M')
+
+day_mapping = {
+    1: '일',
+    2: '월',
+    3: '화',
+    4: '수',
+    5: '목',
+    6: '금',
+    7: '토',
+}
+df['Day_of_Week'] = df['Day_of_Week'].map(day_mapping)
+
+
+# 사고 발생 빈도를 계산 (시간대와 요일 기준)
+heatmap_data = df.groupby(['Day_of_Week', 'Time']).size().unstack(fill_value=0)
+
+day_order = ['일', '토', '금', '목', '수', '화', '월']
+heatmap_data.index = pd.Categorical(heatmap_data.index, categories=day_order, ordered=True)
+heatmap_data = heatmap_data.sort_index()
+
+# 히트맵 그리기
+plt.figure(figsize=(12, 6))
+sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='YlGnBu', cbar_kws={'label': '사고 발생 수'},
+            annot_kws={'size': 8})
+
+plt.title('사고 발생 시간대와 요일에 따른 빈도', fontsize=14)
+plt.ylabel('요일', fontsize=12)
+plt.xlabel('시간', fontsize=12)
+plt.tight_layout()
+plt.show()
 </code>
 </pre>
+
+### 결과
+![image](https://github.com/user-attachments/assets/93da2257-ea5d-4df6-a330-306b138e35e6)
+
+### 결론
+교통사고는 평일 출퇴근 시간대와 주말 11:00 ~ 14:00 시간대가 가장많이 발생한다.
+
+
