@@ -59,7 +59,7 @@ Drive.csv
 ![연령별 인지능력](https://github.com/user-attachments/assets/264534c0-72a1-4431-8a02-f726a77f937b)
 
 
-## 나이가 증가할수록 교통사고 시 환자의 중증도는 정말로 높아질까?
+### 나이가 증가할수록 교통사고 시 환자의 중증도는 정말로 높아질까?
 
 - 연령 그룹화
 <pre>
@@ -133,11 +133,25 @@ plt.show()
 
 연령대가 증가할수록 교통사고 증싱지 비율이 감소하는 추세이다.
 
-## 결론
+### 결론
 연령이 증가함에 따라 운전 솜씨가 향상되고, 면허 갱신 시기가 짧아지며 의사 소견서 제출이 요구된다. <br>
 이러한 요인들로 인해 교통사고 발생 시 중증 환자의 비율이 감소한다.
 [영국 노년 운전면허 갱신방법](https://www.gov.uk/renew-driving-licence-at-70#more-information)
 
 
+## 가장 많은 교통사고가 발생하는 요일과 시간대
 
+<pre>
+<code>
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
+df = pd.read_csv("./Drive.csv")
+df.drop(['Age_of_Driver', 'Accident_Index', 'Unnamed: 0'], axis=1, inplace=True)
+
+# 형식 변환
+df['Time'] = pd.to_datetime(df['Time'], format='%H:%M')
+df['Time'] = df.groupby(pd.Grouper(key='Time', freq='1H'))['Time'].transform('first').dt.strftime('%H:%M')
+</code>
+</pre>
