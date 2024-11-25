@@ -191,7 +191,51 @@ plt.show()
 ### 결과
 ![image](https://github.com/user-attachments/assets/93da2257-ea5d-4df6-a330-306b138e35e6)
 
-### 결론
 교통사고는 평일 출퇴근 시간대와 주말 11:00 ~ 14:00 시간대가 가장많이 발생한다.
+
+## 사상자 수 지도표현
+
+### 처리과정
+<pre>
+<code>
+df.plot(kind = "scatter", x = "Longitude", y = "Latitude", alpha = 0.5,
+             s = df["Number_of_Casualties"]/100, label = "사상자 수", figsize=(15,15),
+             c = "Accident_Severity", cmap = plt.get_cmap("YlGnBu"), colorbar= True
+             )
+plt.legend()
+</code>
+</pre>
+
+### 결과
+![지역별 사상자 수](https://github.com/user-attachments/assets/e0b5690e-80d1-4c70-848c-1d5bfe3c3ede)
+
+영국 북부지역의 데이터가 존재하지 않음
+
+## 도로 구조별 사고 심각도
+
+### 처리과정
+<pre>
+<code>
+plt.figure(figsize=(15, 7))
+ax = sns.countplot(
+    x='Road_Type',
+    hue='Accident_Severity',
+    data=df,
+    order=df["Road_Type"].value_counts().index,
+    palette="YlGnBu"
+)
+ax.set_xticklabels(['1차선', '2차선', '원형 교차로', '일반 통행', '출입로', '알 수 없음'])
+plt.legend(['치명적', '심각', '경미'])
+plt.yscale('log')
+plt.ylabel("빈도 (로그 스케일)", fontsize=14)
+plt.title("도로 유형별 사고 심각도 (로그 스케일)", fontsize=16)
+plt.show()
+</code>
+</pre>
+
+### 결과
+![도로 유형별 사고 심각도](https://github.com/user-attachments/assets/989e751b-7919-40ea-a9a6-e39c85823ff7)
+
+
 
 
